@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Login Page</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=League+Script&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="login.css">
+</head>
+<body>
+  <div id="employee-login">
+    <div class="container">
+      <div class="header">Login Page</div>
+  
+      <div class="input-row">
+        <form @submit.prevent="login">
+          <div class="username">
+            <input type="text" id="username" v-model="username" placeholder="Username…" required />
+          </div>
+          <div class="password">
+            <input type="password" id="password" v-model="password" placeholder="Password…" required />
+          </div>
+          <div class="btn-container">
+            <button type="submit" class="btn regist-btn">Login</button>
+          </div>
+        </form>
+      </div>
+  
+      <div class="output-row">
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+  <script>
+    let app = new Vue({
+      el: '#employee-login',
+      data() {
+        return {
+          username: '',
+          password: '',
+          errorMessage: ''
+        };
+      },
+      methods: {
+        login() {
+          if (this.username === 'employee' && this.password === 'password') {
+            window.location.href = 'item-stock.html'; 
+          } else {
+            this.errorMessage = 'UsernameまたはPasswordが正しくありません。';
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item-Stock</title>
+  <!-- Vuetify CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.min.css" rel="stylesheet">
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+  <!-- Vuetify -->
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.js"></script>
+  <!-- Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=League+Script&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="stock.css">
+  <title>Item Regist</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Item Regist</div>
+        <div class="input-row">
+          <input type="text" id="ID" placeholder="ID…" />
+          <input type="text" id="Name" placeholder="Name…" />
+          <input type="text" id="Color" placeholder="Color…" />
+          <input type="text" id="Price" placeholder="Price…" />
+          <input type="text" id="Category" placeholder="Category…" />
+          <input type="text" id="Stock" placeholder="Stock…" />
+        </div>
+        <div class="btn-container">
+          <button class="btn regist-btn" onclick="addData()">Regist</button>
+        </div>
+        <div class="output-row" id="output">
+          <!-- データの出力部分 -->
+        </div>
+      </div>
+
+    <script>
+        function addData() {
+        // IDの入力チェック（空白か数字以外なら終了）
+        const ID = document.getElementById('ID').value;
+        if (!ID || isNaN(ID)) {
+            console.log("IDに数値が入力されていません");
+            return;
+        }
+
+        // POSTメソッドで送るパラメーターを作成
+        const param = {
+            ID: ID,
+            Name: document.getElementById('Name').value,
+            Color: document.getElementById('Color').value,
+            Price: document.getElementById('Price').value,
+            Category: document.getElementById('Category').value,
+            Stock: document.getElementById('Stock').value
+        };
+
+        // API呼び出し
+        fetch('https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/INSERT', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(param)
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error adding data:', error));
+        }
+
+    </script>
+</body>
+</html>
