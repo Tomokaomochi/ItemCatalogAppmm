@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item-Stock</title>
+  <!-- Vuetify CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.min.css" rel="stylesheet">
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+  <!-- Vuetify -->
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.js"></script>
+  <!-- Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=League+Script&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="stock.css">
+  <title>Item Edit</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Item Edit</div>
+        <div class="input-row">
+            <input type="text" id="ID" placeholder="ID…" />
+            <input type="text" id="Name" placeholder="Name…" />
+            <input type="text" id="Color" placeholder="Color…" />
+            <input type="text" id="Price" placeholder="Price…" />
+            <input type="text" id="Category" placeholder="Category…" />
+            <input type="text" id="Stock" placeholder="Stock…" />
+        </div>
+        <div class="btn-container">
+            <button class="btn edit-btn" onclick="getData()">Get Data</button>
+            <button class="btn edit-btn" onclick="updateData()">Update</button>
+        </div>
+        <div class="output-row" id="output">
+            <!-- データの出力部分 -->
+        </div>
+    </div>
+    
+    <script>
+        // データベースからIDに対応するデータを取得して表示
+        function getData() {
+            const ID = document.getElementById('ID').value;
+            if (!ID || isNaN(ID)) {
+                console.log("IDに数値が入力されていません");
+                return;
+            }
+    
+            fetch('https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/items/{id}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        document.getElementById('Name').value = data.Name;
+                        document.getElementById('Color').value = data.Color;
+                        document.getElementById('Price').value = data.Price;
+                        document.getElementById('Category').value = data.Category;
+                        document.getElementById('Stock').value = data.Stock;
+                    } else {
+                        console.log("データが見つかりませんでした");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+    
+        // データを更新してデータベースに送信
+        function updateData() {
+            const ID = document.getElementById('ID').value;
+            if (!ID || isNaN(ID)) {
+                console.log("IDに数値が入力されていません");
+                return;
+            }
+    
+            const param = {
+                ID: ID,
+                Name: document.getElementById('Name').value,
+                Color: document.getElementById('Color').value,
+                Price: document.getElementById('Price').value,
+                Category: document.getElementById('Category').value,
+                Stock: document.getElementById('Stock').value
+            };
+    
+            fetch('https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/items/{id}', {
+                method: 'PUT', // データを更新する場合はPUTメソッドを使用
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(param)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("データが正常に更新されました");
+                    } else {
+                        console.log("データの更新に失敗しました");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating data:', error);
+                });
+        }
+    </script>
+    
+</body>
+</html>

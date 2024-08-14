@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ItemCatalog</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=League+Script&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="app.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="header__left">
+        <img src="https://images.unsplash.com/photo-1578972497170-bfc780c65f65?q=80&w=1886&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Logo">
+        <h1>Item Catalog</h1>
+      </div>
+      <div class="header__center">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search Items...">
+      </div>
+      <div class="header__right">
+        <button><i class="fas fa-bars"></i></button>
+      </div>
+      <div class="header__right">
+        <button onclick="window.location.href = 'employee-login.html';">Employee-Login</button>
+      </div>
+    </header>
+    
+    <section class="carousel">
+      <div class="carousel__main">
+        <transition name="active">
+          <div class="carousel__main-item" :key="images[active].id">
+            <img :src="images[active].img">
+          </div>
+        </transition>
+      </div>
+      <div @click="prev" class="carousel__prev"><i class="fas fa-angle-left"></i></div>
+      <div @click="next" class="carousel__next"><i class="fas fa-angle-right"></i></div>
+      <ul class="carousel__thumbnails">
+        <li v-for="(image, id) in images" :key="image.id" :class="{current: active === image.id}" @click="current(image.id)">
+          <img :src="image.img">
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <script>
+    let app = new Vue({
+      el:'#app',
+      data(){
+        return {
+          active: 0,
+          images: [
+            {id:0, img:'images/image000.jpg'},
+            {id:1, img:'images/image001.jpg'},
+            {id:2, img:'images/image002.jpg'},
+            {id:3, img:'images/image003.jpg'},
+            {id:4, img:'images/image004.jpg'},
+            {id:5, img:'images/image005.jpg'},
+            {id:6, img:'images/image006.jpg'},
+          ]
+        }
+      },
+      methods:{
+        current(id){
+          this.active = id
+        },
+        prev(){
+          if(this.active <= 0){
+            this.active = this.images.length - 1
+          } else {
+            this.active--
+          }
+        },
+        next(){
+          if(this.active >= this.images.length - 1){
+            this.active = 0
+          } else {
+            this.active++
+          }
+        }
+      },
+      mounted(){
+        let that = this
+        setInterval(()=>{
+          that.next()
+        }, 4000)
+      }
+    })
+  </script>
+</body>
+</html>

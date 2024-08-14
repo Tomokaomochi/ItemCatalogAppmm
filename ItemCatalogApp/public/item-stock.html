@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item-Stock</title>
+  <!-- Vuetify CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.min.css" rel="stylesheet">
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+  <!-- Vuetify -->
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.js"></script>
+  <!-- Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=League+Script&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="stock.css">
+<title>Item Stock</title>
+</head>
+<body>
+  <div class="container">
+    <div class="header">Item Stock</div>
+    
+    <div class="btn-container">
+      <button class="btn item-list-btn" onclick="readData()">Itemlist</button>
+      <button class="btn regist-btn" onclick="window.location.href = 'item-regist.html';">Regist</button>
+      <button class="btn edit-btn" onclick="window.location.href = 'item-edit.html';">Edit</button>
+    </div>
+    <div class="output-row" id="output">
+      <!-- データの出力部分 -->
+    </div>
+  </div>
+
+  <script>
+    function readData() {
+      // API呼び出し
+      fetch('https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/SELECT')
+      .then(response => response.json())
+      .then(data => {
+        const output = document.getElementById('output');
+        output.innerHTML = ''; // 既存の出力をクリア
+        data.List.forEach(item => {
+          const itemRow = document.createElement('div');
+          itemRow.textContent = `ID: ${item.ID}, Name: ${item.Name}, Color: ${item.Color}, Price: ${item.Price}, Category: ${item.Category}, Stock: ${item.Stock}`;
+          output.appendChild(itemRow);
+        });
+      })
+      .catch(error => console.error('Error reading data:', error));
+    }
+  </script>
+</body>
+</html>
